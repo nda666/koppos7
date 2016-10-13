@@ -1,0 +1,189 @@
+@navbarHeight: 51px;
+// koppos master css by Adha Bakhtiar
+html, body {
+    position: relative;
+    height: 100%;
+}
+
+#master {
+    .navbar-brand {
+        width: 200px;
+        padding: 7.5px 15px;
+        > .brand-icon {
+            display: inline-block;
+            font-size: 25px;
+            bottom: 10px;
+            position: relative;
+            color: rgba(255, 255, 255, 0.75);
+            margin-left: 10px;
+        }
+        > .brand-title {
+            display: inline-block;
+            p {
+                font-size: 12px;
+                color: rgba(255, 255, 255, 0.75);
+                margin: 0;
+            }
+        }
+    }
+    #navbar > .container-fluid {
+        padding-left: 0;
+    }
+    .navbar-brand {}
+    .master-container {
+        position: relative;
+        padding-bottom: 20px;
+        min-height: 100%;
+    }
+    .content-container {
+        margin-top: @navbarHeight;
+        min-height: 100%;
+        position: relative;
+        > div {
+            padding-top: 1px;
+            padding-bottom: 10px;
+        }
+    }
+    .footer-container {
+        display: block;
+        .footer {
+            padding-top: 15px;
+            padding-bottom: 15px;
+            width: 100%;
+            padding-left: 0;
+            background: #f1f1f1;
+        }
+    }
+    .pull-left {
+        float: left;
+    }
+    .content-main, .footer-container {
+        width: 100%;
+    }
+    body, html {
+        height: 100%;
+    }
+    nav.sidebar, .content-main {
+        -webkit-transition: opacity 200ms ease-out;
+        -moz-transition: opacity 200ms ease-out;
+        -o-transition: opacity 200ms ease-out;
+        transition: opacity 200ms ease-out;
+    }
+    nav.sidebar {
+        opacity: 0;
+        z-index: 1000;
+        position: fixed;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.45);
+        margin-left: -200px;
+        float: left;
+        &.active {
+            width: 100%;
+            opacity: 1;
+        }
+        > .sidebar-content {
+            width: 200px;
+            margin: 0;
+            z-index: 1000;
+            position: fixed;
+            height: 100%;
+            top: 0;
+            overflow: auto;
+            > .sidebar-main {
+                position: relative;
+                top: 51px;
+            }
+        }
+        > .sidebar-default {
+            background: #34495e;
+        }
+    }
+    nav.sidebar.active {
+        margin-left: 0px;
+    }
+    nav.sidebar a {
+        padding-right: 13px;
+        color: #fff;
+    }
+    nav.sidebar .navbar-nav .open .dropdown-menu {
+        position: static;
+        float: none;
+        width: auto;
+        margin-top: 0;
+        background-color: transparent;
+        border: 0;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+    }
+    nav.sidebar .navbar-collapse, nav.sidebar .container-fluid {
+        padding: 0 0px 0 0px;
+    }
+    nav.sidebar li {
+        width: 100%;
+    }
+    nav.sidebar:hover {
+        // margin-left: 0px;
+    }
+    .forAnimate {
+        opacity: 0;
+    }
+    nav.sidebar .navbar-nav {
+        margin: 0;
+    }
+    @media (min-width: 765px) {
+        .content-main, .footer-container {
+            padding-left: 50px;
+        }
+        nav.sidebar:hover + .content-main {
+            // margin-left: 200px;
+        }
+        nav.sidebar.navbar.sidebar>.container .navbar-brand, .navbar>.container-fluid .navbar-brand {
+            margin-left: 0px;
+        }
+        nav.sidebar .navbar-brand, nav.sidebar .navbar-header {
+            text-align: center;
+            width: 100%;
+            margin-left: 0px;
+        }
+        nav.sidebar {
+            margin-left: -160px;
+            margin-bottom: 0px;
+            opacity: 1;
+            > .sidebar-content {
+                width: 200px;
+            }
+            &:hover {
+                margin-left: 0px;
+            }
+        }
+    }
+    @media (min-width: 1330px) {
+        .content-main, .footer-container {
+            padding-left: 200px;
+        }
+        nav.sidebar {
+            opacity: 1;
+            margin-left: 0px;
+            float: left;
+            > .sidebar-content {
+                width: 200px;
+            }
+        }
+        nav.sidebar .forAnimate {
+            opacity: 1;
+        }
+    }
+    nav.sidebar .navbar-nav > li > a:hover, nav.sidebar .navbar-nav > li > a:focus, nav.sidebar .nav .open > a, nav.sidebar .nav .open > a:hover, nav.sidebar .nav .open > a:focus, nav.sidebar .dropdown-menu > li > a:hover, nav.sidebar .dropdown-menu > li > a:focus {
+        background: rgba(51, 51, 51, 0.32) !important;
+        color: #fff;
+    }
+    nav:hover .forAnimate {
+        opacity: 1;
+    }
+    section {
+        padding-left: 15px;
+    }
+    .table-button-container {
+        min-width: 90px;
+    }
+}
