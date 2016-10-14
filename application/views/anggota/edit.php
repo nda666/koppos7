@@ -1,16 +1,16 @@
 <?php defined('BASEPATH') or exit('No direct script access allowed'); ?>
 <!-- Modal -->
-<div class="modal fade" id="modal-insert" role="dialog" aria-labelledby="myModalLabel">
+<div class="modal fade" id="modal-edit" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
-   <form action="<?php echo base_url('anggota/insert') ?>" method="POST" id="form-insert" role="form" class="form form-horizontal">
+   <form action="<?php echo base_url('anggota/edit') ?>" method="POST" id="form-edit" role="form" class="form form-horizontal">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel"><i class="fa fa-plus-circle fa-fw"></i>Tambah Anggota</h4>
+        <h4 class="modal-title" id="myModalLabel"><i class="fa fa-edit fa-fw"></i>Edit Anggota</h4>
       </div>
       <div class="modal-body">
         
-            <div id="form-insert-error"></div>
+            <div id="form-edit-error"></div>
         
       		<!-- Masukkan Nippos -->
         	<div class="form-group">
@@ -19,7 +19,7 @@
         			<input type="text"  required class="form-control" id="inputNippos" name="nippos" placeholder="Masukkan NIPPOS">
         		</div>
         	</div>
-
+            <input type="hidden" name="id" id="inputID">
         	<!-- Masukkan Nama -->
         	<div class="form-group">
         		<label for="inputNama" class="control-label col-md-3">Nama</label>

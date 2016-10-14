@@ -39,7 +39,7 @@ require.config({
     },
     'pickadate-time':{
       deps: ['jquery', 'pickadate','css!assets/pickadate/themes/default.time.css']
-    }
+    },
     "bootstrapTableFC": {
       deps: ['jquery', 'bootstrapTable']
     },

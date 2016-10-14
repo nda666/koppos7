@@ -25,26 +25,24 @@ $CI->load->view('templates/neraca/header.php');
     <div class="alert-container">
 
     </div>
-    <h4>List Anggota</h4>
-    <div id="toolbar">
+    
+    <div id="toolbar" >
       <div class="btn-group">
         <button id="add" data-toggle="modal" data-target="#modal-insert" class="btn btn-success">
-          <i class="fa fa-plus-circle"></i> Tambah
-        </button>
-        <button id="export" class="btn btn-primary" data-toggle="modal" data-target='#modal-export'>
-          <i class="fa fa-exchange"> Export</i>
+          <i class="fa fa-plus-circle"></i> <span class="hidden-xs hidden-sm">Tambah</span>
         </button>
         
-      </div>
     </div>
 
-    <table class="table table-condensed table-striped" id="anggota-grid"  data-remote="<?=base_url('anggota/data-json')?>" data-show-refresh="true" data-show-columns="true" data-search="true" data-page-size="10" data-pagination="true" data-filter-control="true" data-pagination-loop="false" data-toolbar="#toolbar"
+    </div>
+
+    <table class="table table-condensed table-striped" id="anggota-grid"  data-remote="<?=base_url('anggota/data-json')?>" data-show-refresh="true" data-search="true" data-page-size="10" data-pagination="true" data-filter-control="true" data-pagination-loop="false" data-toolbar="#toolbar"
       data-unique-id="id" data-filter-show-clear="true">
       <thead>
         <tr>
           <th data-align="center" data-width="100px" data-class="table-button-container" data-formatter="actionFormatter"><i class="fa fa-bolt"></i>
           </th>
-          <th data-field="id" data-sortable="true">ID</th>
+          <th data-field="id"  data-filter-control="input" data-sortable="true">ID</th>
           <th data-field="nippos"  data-filter-control="input" data-sortable="true">NIP</th>
           <th data-field="nama" data-filter-control="input" data-sortable="true">Nama</th>
            <th data-field="status" data-sortable="true"  data-filter-control="select">Status</th>
@@ -56,6 +54,7 @@ $CI->load->view('templates/neraca/header.php');
   </div>
   </div>
   <?php $CI->load->view('anggota/insert');?>
+  <?php $CI->load->view('anggota/edit');?>
   <?php $CI->load->view('templates/neraca/fscript'); ?>
   <script type="text/javascript">
   function actionFormatter(val, row, iRow) {
@@ -67,8 +66,118 @@ $CI->load->view('templates/neraca/header.php');
             var API_URL = $('#anggota-grid').attr('data-remote');
             $('#anggota-grid').bootstrapTable({
               url: API_URL,
+              onPostBody: function(data){
+                  $('.btn-edit').click(function() {
+                    var $row = $('#anggota-grid').bootstrapTable('getRowByUniqueId', $(this).attr('data-row'));
+                    $('#form-edit').attr('data-id', $row.id);
+                    $.each($row, function(index, val) {
+                      $('#form-edit [name="' + index + '"]').val(val);
+                    });
+                    $('#modal-edit').modal('show')
+                  });
+                  
+                  $('.btn-delete').click(function(e) {
+                    var deleteButton = $(this);
+
+                    var delMessage = bootbox.dialog({
+                      message: "Menghapus data tidak dapat dibatalkan. Anda yakin menghapus data ini?",
+                      title: "Konfirmasi",
+                      buttons: {
+                        error: {
+                          label: "Tidak",
+                          className: "btn-default"
+                        },
+                        success: {
+                          label: "Ya, Hapus",
+                          className: "btn-danger",
+                          callback: function(el) {
+                            $(el.currentTarget).html('<i class="fa fa-circle-o-notch fa-spin fa-fw"></i> Loading...');
+                            $(el.currentTarget).prop('disabled', 'disabled');
+                            $.get(deleteButton.attr('data-url'), function(result) {
+                              var _alert = $('<div></div>');
+                              if (result.response) {
+                                _alert.attr('class', 'alert alert-success')
+                                _alert.html('<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' + result.message)
+                                $('#anggota-grid').bootstrapTable('refresh')
+                              } else {
+                                _alert.attr('class', 'alert alert-danger')
+
+                                _alert.html('<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' + result.message)
+                              }
+                              $('.alert-container').html(_alert);
+
+                              delMessage.modal('hide');
+                            })
+                            .fail(function(e){
+                              delMessage.find('.bootbox-body').html('<span class="text-danger">Terjadi kesalahan saat menghapus data. Data gagal dihapus</span><br>Silahkan coba lagi, apabila pesan ini masih muncul lagi harap hubungi IT Admin.<br><br>Anda ingin mencoba menghapus data ini lagi?');
+                              $(el.currentTarget).html('Ya, Hapus');
+                              $(el.currentTarget).removeAttr('disabled');
+                            })
+                            .always(function() {
+                              $(el.currentTarget).html('Ya, Hapus');
+                              $(el.currentTarget).removeAttr('disabled');
+                            });
+                            return false;
+                          }
+                        }
+                      }
+                    });
+                  });
+                
+              }
             });
-        })
+            
+            $('#form-insert').on('submit', function(e){
+                e.preventDefault();
+                $(this).attr('disabled', 'disabled')
+                var formdata = $(this).serializeArray();
+                $.post($(this).attr('action'), formdata, function(result) {
+                  var _alert = $('<div></div>');
+                  if (result.response) {
+                    $('#modal-insert').modal('hide');
+                    _alert.attr('class', 'alert alert-success')
+                    _alert.html('<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' + result.message)
+                    $('#anggota-grid').bootstrapTable('refresh')
+                    $('.alert-container').html(_alert);
+                  } else {
+                     _alert.attr('class', 'alert alert-danger')
+                    if (typeof result.message === 'object' || result.message === 'array'){
+                      var $message = '<ul>';
+                      $.each(result.message, function(index, val){
+                        $message += '<li>' + val +'</li>';
+                      });
+                      $message += '</ul>'
+                      _alert.html('<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' + $message)
+                    } else if (typeof result.message === 'string' ){
+                      _alert.html('<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' + result.message + result.error.message);
+                      
+                    }
+                    $('#form-insert-error').html(_alert);
+                  }
+
+              });
+            });
+            
+            
+            $('#form-edit').submit(function(e) {
+              e.preventDefault()
+              $(this).attr('disabled', 'disabled')
+              var formdata = $(this).serializeArray();
+              $.post($(this).attr('action') + '/' + $(this).attr('data-id'), formdata, function(result) {
+                var _alert = $('<div></div>');
+                if (result.response) {
+                  $('#modal-edit').modal('hide');
+                  _alert.attr('class', 'alert alert-success')
+                  _alert.html('<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' + result.message)
+                  $('#anggota-grid').bootstrapTable('refresh')
+                } else {
+                  _alert.attr('class', 'alert alert-danger')
+                  _alert.html('<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' + result.message)
+                }
+                $('.alert-container').html(_alert);
+              })
+            });
+        });
       
     });
   </script>

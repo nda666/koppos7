@@ -7,7 +7,7 @@ class Anggota extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-    //Codeigniter : Write Less Do More
+        $this->load->helper('sites');
     }
 
     public function index()
@@ -17,7 +17,7 @@ class Anggota extends CI_Controller
 
     public function data_json()
     {
-        $query = $this->db->select('*')->get('anggota');
+        $query = $this->db->select('*, Concat("'.base_url('anggota/delete/').'", anggota.id) as delUrl')->get('anggota');
         $this->output
           ->set_content_type('application/json')
           ->set_output(json_encode($query->result(), JSON_NUMERIC_CHECK));
@@ -60,7 +60,8 @@ class Anggota extends CI_Controller
             $error = $this->db->error();
             $json = [
                 'response' => false,
-                'message' => 'Terjadi kesalahan database, Gagal menyimpan data.<br>' & $error['message'],
+                'error' => $error,
+                'message' => 'Terjadi kesalahan database, Gagal menyimpan data.<br>',
             ];
         } else {
             $json = [
@@ -87,7 +88,7 @@ class Anggota extends CI_Controller
         $post = $this->input->post();
         $id = $post['id'];
         unset($post['id']);
-        if ($query = $this->db->update('anggota', $post, 'id = '.$id)) {
+        if (! $query = $this->db->update('anggota', $post, 'id = '.$id)) {
             $error = $this->db->error();
             $json = [
                 'response' => false,
@@ -98,10 +99,28 @@ class Anggota extends CI_Controller
             $json = [
                 'response' => true,
                 'message' => 'Berhasil menyimpan data.<br>',
-                'query' => $query,
             ];
         }
 
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($json, JSON_NUMERIC_CHECK));
+
+        return;
+    }
+
+    public function delete($id)
+    {
+        $query = $this->db->where('id =', $id)->delete('anggota');
+        $json = (!$query) ?
+        [
+            'response' => false,
+            'message' => 'Gagal menghapus data.<br>',
+            'error' => $this->db->error(),
+        ] : [
+            'response' => true,
+            'message' => 'Berhasil menghapus data.<br>',
+        ];
         $this->output
             ->set_content_type('application/json')
             ->set_output(json_encode($json, JSON_NUMERIC_CHECK));

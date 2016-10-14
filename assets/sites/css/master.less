@@ -63,6 +63,20 @@ html, body {
     body, html {
         height: 100%;
     }
+    .sidebar-toggle {
+      border: 0;
+      background: transparent;
+      margin-top: 8px;
+      margin-left: 30px;
+      margin-bottom: 8px;
+      padding: 9px 10px;
+      float: left;
+      position: relative;
+      display: inline-block;
+      &:hover{
+        background-color:rgba(20, 143, 119, 0.97); 
+      }
+    }
     nav.sidebar, .content-main {
         -webkit-transition: opacity 200ms ease-out;
         -moz-transition: opacity 200ms ease-out;
@@ -156,10 +170,16 @@ html, body {
                 margin-left: 0px;
             }
         }
+        .sidebar-toggle {
+          display: none;
+        }
     }
     @media (min-width: 1330px) {
         .content-main, .footer-container {
             padding-left: 200px;
+        }
+        .sidebar-toggle {
+          display: none;
         }
         nav.sidebar {
             opacity: 1;

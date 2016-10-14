@@ -1,3 +1,4 @@
+
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 		<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 		<!--[if lt IE 9]>
@@ -13,11 +14,9 @@
 				
 				<!-- Brand and toggle get grouped for better mobile display -->
 				<div class="navbar-header">
-					<button type="button" class="navbar-toggle" data-toggle="sidebar" data-target="#sidebar">
-						<span class="sr-only">Toggle navigation</span>
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
+					<button class="sidebar-toggle" data-toggle="sidebar" data-target="#sidebar"><i class="fa fa-bars fa-lg"></i></button>
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-item">
+						<i class="fa fa-ellipsis-h fa-lg"></i>
 					</button>
 					<a class="navbar-brand active" href="#">
 						<div class="brand-icon">
@@ -31,7 +30,7 @@
 				</div>
 
 				<!-- Collect the nav links, forms, and other content for toggling -->
-				<div class="collapse navbar-collapse navbar-ex1-collapse">
+				<div class="collapse navbar-collapse" id="navbar-item">
 					<ul class="nav navbar-nav">
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown">Kode Rekening <b class="caret"></b></a>

@@ -1,0 +1,12 @@
+{
+  "ecmaVersion": 6,
+  "libs": [
+    "browser",
+    "jquery"
+  ],
+  "loadEagerly": [
+    "assets/datepicker/js/bootstrap-datepicker.js",
+    "assets/bootstrap/js/bootstrap.js",
+    "assets/bootbox/bootbox.js"
+  ]
+}
