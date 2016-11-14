@@ -18,7 +18,22 @@ class Hotspot extends CI_Controller
         $data['page_title'] = 'Hotspot';
         $this->load->view('hotspot/index', $data);
     }
+    
+    public function expired_json(){
+        $this->db->select('*, DATE_FORMAT(tgl_daftar, "%Y-%m-%d") AS tgl_daftar, DATE_FORMAT(tgl_exp, "%Y-%m-%d") AS tgl_exp, Concat("'.base_url('hotspot/deactive/').'", hotspot.id) as delUrl')
+        ->like('tgl_exp', date('Y-m-d'), 'after')->where('active', 1);
+        $query = $this->db->get('hotspot');
+        $json = [];
+        if ($query->num_rows() > 0) {
+            $json = $query->result();
+        } 
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($json, JSON_NUMERIC_CHECK));
 
+        return;
+    }
+    
     public function data_json()
     {
         $this->db->select('*, DATE_FORMAT(tgl_daftar, "%Y-%m-%d") AS tgl_daftar, DATE_FORMAT(tgl_exp, "%Y-%m-%d") AS tgl_exp, Concat("'.base_url('hotspot/delete/').'", hotspot.id) as delUrl');
@@ -164,12 +179,14 @@ class Hotspot extends CI_Controller
             ->setDescription('description');
 
         $objPHPExcel->setActiveSheetIndex(0);
-
+        $dStart = DateTime::createFromFormat('Y-m-d',$get['date-start']);
+        $dEnd = DateTime::createFromFormat('Y-m-d',$get['date-end']);
         $query = $this->db
             ->select('*,DATE_FORMAT(tgl_daftar, "%d/%m/%y") AS tgl_daftar, DATE_FORMAT(tgl_exp, "%d/%m/%y") AS tgl_exp')
-            ->where('tgl_daftar >= ', $get['date-start'])
-            ->where('tgl_exp <=', $get['date-end'])
+            ->where('tgl_daftar >=', $dStart->format('Y-m-d 00:00:00'))
+            ->where('tgl_daftar <=', $dEnd->format('Y-m-d 00:00:00'))
             ->get('hotspot');
+        
         $i = 0;
         $objPHPExcel->getActiveSheet()
             ->mergeCellsByColumnAndRow(0, $i + 1, 6, $i + 1);

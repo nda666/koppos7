@@ -22,6 +22,9 @@ $CI->load->view('templates/neraca/header.php');
   </ol>
 
   <div class="col-md-12">
+      <div id="expired-container" data-remote="<?php echo base_url('hotspot/expired-json') ?>">
+          
+      </div>
     <div class="alert-container">
 
     </div>
@@ -82,7 +85,23 @@ $CI->load->view('templates/neraca/header.php');
   requirejs(['jquery', 'bootstrap', 'validator', 'bootbox', 'pickadate','pickadate-date','mask' ,'bootstrapTable', 'bootstrapTableFC'], function($, bs, bsval, bootbox) {
     $(document).ready(function() {
       $.mask.definitions['h'] = "[A-Fa-f0-9]";
-
+      var expired_json = function(){
+          $.get($('#expired-container').attr('data-remote'),function(res){
+              if (res.length > 0){
+                  var $alert = $('<div class="alert alert-warning alert-dismissible" role="alert"></div>');
+                  $alert.append('<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>')
+                  $alert.append('<strong>Pengguna Expired ditemukan</strong>');
+                  $alert.append('<ul></ul>');
+                  $.each(res, function(e, v){
+                      $alert.children('ul').append('<li> ID: '+ v.id +' Sudah expired</li>');
+                  })
+                  
+                  $('#expired-container').html('');
+                  $('#expired-container').append($alert);
+              }
+          })
+      }
+      expired_json();
       $('[name="mac"]').mask("hh:hh:hh:hh:hh:hh");
 
       // Load required css
@@ -103,6 +122,7 @@ $CI->load->view('templates/neraca/header.php');
       var $table = $('#hotspot-grid').bootstrapTable({
         url: API_URL,
         onPostBody: function(data) {
+          $('#hotspot-grid th input, #hotspot-grid th select').addClass('input-sm');
           $('#hotspot-grid [data-toggle="tooltip"]').tooltip({
             container: '#hotspot-grid'
           });
@@ -166,15 +186,13 @@ $CI->load->view('templates/neraca/header.php');
 
     var from_$input = $('input.date-start').pickadate({
       container: 'body',
-      format: 'yyyy-mm-dd',
-      formatSubmit: 'yyyy-mm-dd'
+      format: 'yyyy-mm-dd'
     }),
     from_picker = from_$input.pickadate('picker')
 
     var to_$input = $('input.date-end').pickadate({
       container: 'body',
-      format: 'yyyy-mm-dd',
-      formatSubmit: 'yyyy-mm-dd'
+      format: 'yyyy-mm-dd'
     }),
     to_picker = to_$input.pickadate('picker')
 

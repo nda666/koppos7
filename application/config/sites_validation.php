@@ -5,7 +5,7 @@ if (!defined('BASEPATH')) {
 }
 
 $config = [
-    'hotspot' => [
+    'hotspot'    => [
         // Nama Field
         [
             'field' => 'nama',
@@ -40,17 +40,38 @@ $config = [
             'rules' => 'required|numeric',
         ],
     ],
-    'anggota' => [
+    'anggota'    => [
         [
-        'field' => 'nama',
-        'label' => 'Nama',
-        'rules' => 'required',
+            'field' => 'nama',
+            'label' => 'Nama',
+            'rules' => 'required',
         ],
         [
-        'field' => 'nippos',
-        'label' => 'NIPPOS',
-        'rules' => 'required|min_length[3]',
+            'field' => 'nippos',
+            'label' => 'NIPPOS',
+            'rules' => 'required|min_length[3]',
+        ],
     ],
+    't_brng'     => [
+        [
+            'field' => 'nama',
+            'label' => 'Nama',
+            'rules' => 'required',
+        ],
+    ],
+    't_kat_brng' => [
+        [
+            'field' => 'kategori',
+            'label' => 'Kategori',
+            'rules' => 'required',
+        ],
+    ],
+    't_jenis_brng' => [
+        [
+            'field' => 'jenis',
+            'label' => 'Jenis',
+            'rules' => 'required',
+        ],
     ],
 ];
 

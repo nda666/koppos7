@@ -19,7 +19,7 @@
         			<input type="text"  required class="form-control" id="inputNippos" name="nippos" placeholder="Masukkan NIPPOS">
         		</div>
         	</div>
-            <input type="hidden" name="id" id="inputID">
+            <input type="hidden" name="id_anggota" id="inputID">
         	<!-- Masukkan Nama -->
         	<div class="form-group">
         		<label for="inputNama" class="control-label col-md-3">Nama</label>
